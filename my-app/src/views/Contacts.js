@@ -1,49 +1,70 @@
-import React from 'react';
-import { SafeAreaView, View, VirtualizedList, StyleSheet, Text, StatusBar } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, FlatList, StyleSheet } from 'react-native';
 
-const getItem = (_data, index) => ({
-  id: Math.random().toString(12).substring(0),
-  title: `Item ${index + 1}`,
-});
-
-const getItemCount = _data => 20;
-
-const Item = ({title}) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
+const contactsData = [
+  { id: 1, name: 'John Doe', company: 'Financial Services Inc.' },
+  { id: 2, name: 'Jane Smith', company: 'Creative Consulting' },
+  { id: 3, name: 'Anna Haro', company: 'aaaaaaaaaa'}
+];
 
 const ContactScreen = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  const renderContact = ({ item }) => (
+    <View style={styles.contactContainer}>
+      <Text style={styles.contactName}>{item.name}</Text>
+      <Text style={styles.contactCompany}>{item.company}</Text>
+    </View>
+  );
+  
   return (
-    <SafeAreaView style={styles.container}>
-      <VirtualizedList
-        initialNumToRender={4}
-        renderItem={({item}) => <Item title={item.title} />}
-        keyExtractor={item => item.id}
-        getItemCount={getItemCount}
-        getItem={getItem}
+    <View style={styles.container}>
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Search"
+        value={searchQuery}
+        onChangeText={(text) => setSearchQuery(text)}
       />
-    </SafeAreaView>
+      <FlatList
+        data={contactsData}
+        renderItem={renderContact}
+        keyExtractor={(item) => item.id.toString()}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight,
+    padding: 16,
   },
-  item: {
-    backgroundColor: '#f9c2ff',
-    height: 150,
-    justifyContent: 'center',
-    marginVertical: 8,
-    marginHorizontal: 16,
-    padding: 20,
+  searchInput: {
+    height: 40,
+    borderWidth: 1,
+    borderColor: 'gray',
+    marginBottom: 16,
+    paddingHorizontal: 8,
   },
-  title: {
-    fontSize: 32,
+  contactContainer: {
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: 'lightgray',
+  },
+  contactName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  contactCompany: {
+    fontSize: 14,
+    color: 'gray',
+  },
+  clock: {
+    alignSelf: 'flex-end',
+    marginTop: 16,
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 
-export default ContactScreen
+export default ContactScreen;
