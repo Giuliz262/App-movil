@@ -4,7 +4,12 @@ import { View, Text, TextInput, FlatList, StyleSheet } from 'react-native';
 const contactsData = [
   { id: 1, name: 'John Doe', company: 'Financial Services Inc.' },
   { id: 2, name: 'Jane Smith', company: 'Creative Consulting' },
-  { id: 3, name: 'Anna Haro', company: 'aaaaaaaaaa'}
+  { id: 3, name: 'Anna Haro', company: 'aaaaaaaaaa'},
+  { id: 4, name: 'Carl Jhonson', company: 'eee'},
+  { id: 5, name: 'Messi', company: 'fdfrf'},
+  { id: 6, name: 'Joe', company: 'idk'}
+
+
 ];
 
 const ContactScreen = () => {
