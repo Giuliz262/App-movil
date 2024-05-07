@@ -9,6 +9,7 @@ const contactsData = [
 
 const ContactScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [filteredContacts, setFilteredContacts] = useState(contactsData);
   
   const renderContact = ({ item }) => (
     <View style={styles.contactContainer}>
@@ -16,6 +17,14 @@ const ContactScreen = () => {
       <Text style={styles.contactCompany}>{item.company}</Text>
     </View>
   );
+
+  const handleSearch = (text) => {
+    setSearchQuery(text);
+    const filteredData = contactsData.filter(contact =>
+      contact.name.toLowerCase().includes(text.toLowerCase())
+    );
+    setFilteredContacts(filteredData);
+  };
   
   return (
     <View style={styles.container}>
@@ -23,10 +32,10 @@ const ContactScreen = () => {
         style={styles.searchInput}
         placeholder="Search"
         value={searchQuery}
-        onChangeText={(text) => setSearchQuery(text)}
+        onChangeText={handleSearch}
       />
       <FlatList
-        data={contactsData}
+        data={filteredContacts}
         renderItem={renderContact}
         keyExtractor={(item) => item.id.toString()}
       />
@@ -58,12 +67,6 @@ const styles = StyleSheet.create({
   contactCompany: {
     fontSize: 14,
     color: 'gray',
-  },
-  clock: {
-    alignSelf: 'flex-end',
-    marginTop: 16,
-    fontSize: 18,
-    fontWeight: 'bold',
   },
 });
 
