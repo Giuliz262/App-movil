@@ -1,41 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, FlatList, StyleSheet } from 'react-native';
-
-const contactsData = [
-  { id: 1, name: 'John Doe', company: 'Financial Services Inc.' },
-  { id: 2, name: 'Jane Smith', company: 'Creative Consulting' },
-  { id: 3, name: 'Anna Haro', company: 'aaaaaaaaaa'},
-  { id: 4, name: 'Carl Jhonson', company: 'eee'},
-  { id: 5, name: 'Messi', company: 'fdfrf'},
-  { id: 6, name: 'Joe', company: 'idk'}
-
-
-];
+import contactsData from '../assets/contactsData.json'
 
 const ContactScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredContacts, setFilteredContacts] = useState(contactsData);
-  
+  const [filteredContacts, setFilteredContacts] = useState([]);
+
+  useEffect(() => {
+    const filteredData = contactsData.filter(contact =>
+      contact.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredContacts(filteredData);
+  }, [searchQuery]);
+
   const renderContact = ({ item }) => (
     <View style={styles.contactContainer}>
-      <Text style={styles.contactName}>{item.name}</Text>
-      <Text style={styles.contactCompany}>{item.company}</Text>
+      <Text style={styles.contactName}>{item && item.name}</Text>
+      <Text style={styles.contactspeciality}>{item && item.specialty}</Text>
     </View>
   );
+  
 
   const handleSearch = (text) => {
     setSearchQuery(text);
-    const filteredData = contactsData.filter(contact =>
-      contact.name.toLowerCase().includes(text.toLowerCase())
-    );
-    setFilteredContacts(filteredData);
   };
   
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.searchInput}
-        placeholder="Search"
+        placeholder="Buscar"
         value={searchQuery}
         onChangeText={handleSearch}
       />
@@ -53,6 +47,11 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
   },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   searchInput: {
     height: 40,
     borderWidth: 1,
@@ -69,7 +68,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  contactCompany: {
+  contactspeciality: {
     fontSize: 14,
     color: 'gray',
   },
